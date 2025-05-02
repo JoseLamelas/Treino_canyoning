@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Treino para Canyoning</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 15px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin: 20px 0 10px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin: 15px 0 10px;
+            color: var(--secondary);
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            background: var(--light);
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-bottom: 3px solid var(--accent);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .week-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            margin-bottom: 10px;
+        }
+        
+        .week-tab {
+            padding: 8px 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            background: var(--light);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .week-tab.active {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .week-content {
+            display: none;
+        }
+        
+        .week-content.active {
+            display: block;
+        }
+        
+        .exercise {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: var(--light);
+            cursor: pointer;
+        }
+        
+        .exercise-title {
+            flex-grow: 1;
+            font-weight: bold;
+        }
+        
+        .exercise-details {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+        
+        .exercise-content {
+            display: none;
+            padding: 15px;
+        }
+        
+        .exercise-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .exercise-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        
+        .exercise-description {
+            margin-bottom: 15px;
+        }
+        
+        .meal {
+            margin-bottom: 15px;
+            border-left: 4px solid var(--secondary);
+            padding-left: 15px;
+        }
+        
+        .meal-title {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .meal-items {
+            list-style: none;
+            margin-top: 5px;
+        }
+        
+        .meal-item {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .meal-item:before {
+            content: "•";
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .progress-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .progress-item {
+            margin-bottom: 15px;
+        }
+        
+        .progress-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-value {
+            height: 100%;
+            background: var(--success);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+        
+        .tips {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .tips h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        .tips ul {
+            padding-left: 20px;
+        }
+        
+        .tips li {
+            margin-bottom: 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 900px;
+            }
+            
+            .exercise-content.active {
+                flex-direction: row;
+            }
+            
+            .exercise-image-container {
+                flex: 0 0 40%;
+                margin-right: 20px;
+            }
+            
+            .exercise-details-container {
+                flex: 1;
+            }
+            
+            .exercise-image {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Plano de Treino e Alimentação para Canyoning</h1>
+            <p>Plano personalizado de 8 semanas para preparação físico e nutricional</p>
+        </header>
+        
+        <div class="tab-container">
+            <ul class="tabs">
+                <li class="tab active" data-tab="overview">Visão Geral</li>
+                <li class="tab" data-tab="training">Treino</li>
+                <li class="tab" data-tab="nutrition">Alimentação</li>
+                <li class="tab" data-tab="progress">Progresso</li>
+            </ul>
+            
+            <div id="overview" class="tab-content active">
+                <h2>Sua Situação Atual</h2>
+                <ul>
+                    <li><strong>Idade:</strong> 42 anos</li>
+                    <li><strong>Altura:</strong> 1,74m</li>
+                    <li><strong>Peso atual:</strong> 83kg</li>
+                    <li><strong>IMC atual:</strong> 27,4 (sobrepeso leve)</li>
+                    <li><strong>Limitações:</strong> Artrose nos joelhos (evitar exercícios de impacto)</li>
+                    <li><strong>Experiência:</strong> Experiente em canyoning</li>
+                    <li><strong>Disponibilidade:</strong> 3-4 dias por semana</li>
+                </ul>
+                
+                <h2>Objetivos</h2>
+                <ul>
+                    <li>Perda de peso entre 4-6kg (meta: 77-79kg)</li>
+                    <li>Aumento de resistência cardiovascular</li>
+                    <li>Fortalecimento dos grupos musculares específicos para canyoning</li>
+                    <li>Estabilização articular dos joelhos</li>
+                    <li>Melhora de equilíbrio e coordenação</li>
+                </ul>
+                
+                <h2>Progresso Esperado após 8 Semanas</h2>
+                <ul>
+                    <li>Redução de peso: 4-6kg (chegando a 77-79kg)</li>
+                    <li>Resistência cardiovascular: melhora significativa</li>
+                    <li>Força muscular: aumento nos grupos musculares essenciais</li>
+                    <li>Estabilidade articular: redução do desconforto nos joelhos</li>
+                    <li>Equilíbrio e coordenação: aprimoramento para terrenos irregulares</li>
+                    <li>Composição corporal: mais massa magra, menos gordura</li>
+                    <li>Recuperação mais rápida entre atividades intensas</li>
+                </ul>
+                
+                <div class="tips">
+                    <h3>Dicas Importantes</h3>
+                    <ul>
+                        <li>Sempre aqueça antes dos exercícios (5-10 minutos)</li>
+                        <li>Hidrate-se adequadamente (2,5-3L por dia)</li>
+                        <li>Priorize a técnica correta sobre a carga</li>
+                        <li>Monitore a dor - desconforto é normal, dor aguda não</li>
+                        <li>Ajuste o plano conforme necessário - ouça seu corpo</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="training" class="tab-content">
+                <h2>Plano de Treino (8 semanas)</h2>
+                
+                <ul class="week-tabs">
+                    <li class="week-tab active" data-week="week1-2">Semanas 1-2</li>
+                    <li class="week-tab" data-week="week3-5">Semanas 3-5</li>
+                    <li class="week-tab" data-week="week6-8">Semanas 6-8</li>
+                </ul>
+                
+                <div id="week1-2" class="week-content active">
+                    <h3>Semanas 1-2: Construção da Base</h3>
+                    
+                    <h4>Academia (2 dias)</h4>
+                    <h5>Treino A (Força)</h5>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Supino reto</div>
+                            <div class="exercise-details">3 séries x 10 repetições</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Supino reto" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Deite-se no banco com os pés firmemente no chão. Segure a barra com as mãos um pouco mais afastadas que a largura dos ombros. Baixe a barra controladamente até tocar levemente o peito, e depois empurre para cima até estender os braços (sem travar os cotovelos).</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Mantenha os ombros para trás e baixos</li>
+                                        <li>Respire para fora ao empurrar</li>
+                                        <li>Mantenha as costas ligeiramente arqueadas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Remada baixa</div>
+                            <div class="exercise-details">3 séries x 10 repetições</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Remada baixa" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Sente-se no aparelho com os pés apoiados na plataforma. Segure a barra com as mãos um pouco mais afastadas que a largura dos ombros. Mantenha as costas retas, puxe a barra em direção à parte inferior do esterno, aproximando as escápulas ao final do movimento.</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Mantenha o peito aberto</li>
+                                        <li>Puxe com os cotovelos, não com os braços</li>
+                                        <li>Evite balançar o corpo durante o movimento</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Leg press</div>
+                            <div class="exercise-details">3 séries x 12 repetições</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Leg press" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Sente-se na máquina com as costas bem apoiadas e posicione os pés na plataforma na largura dos ombros. Destrave a máquina, baixe o peso controladamente dobrando os joelhos até formarem um ângulo de aproximadamente 90 graus, depois estenda as pernas sem travar os joelhos.</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Não deixe os joelhos ultrapassarem a linha dos dedos dos pés</li>
+                                        <li>Use amplitude moderada para proteger os joelhos</li>
+                                        <li>Evite travar os joelhos no topo do movimento</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Outros exercícios do Treino A seriam adicionados da mesma forma -->
+                    
+                    <h5>Treino B (Resistência)</h5>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Remo estacionário</div>
+                            <div class="exercise-details">20 minutos (intensidade moderada)</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Remo estacionário" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Sente-se no aparelho de remo, segure a alça com as duas mãos. Comece com as pernas dobradas e os braços estendidos. Empurre com as pernas, incline o tronco ligeiramente para trás e puxe a alça até a parte inferior do peito. Retorne à posição inicial na ordem inversa.</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Mantenha as costas retas durante todo o movimento</li>
+                                        <li>Coordene a respiração com o movimento</li>
+                                        <li>Foco em manter um ritmo constante</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Outros exercícios do Treino B seriam adicionados da mesma forma -->
+                    
+                    <h4>Ar Livre (1-2 dias)</h4>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Caminhada em terreno variado</div>
+                            <div class="exercise-details">45-60 minutos</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Caminhada em terreno variado" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Realize uma caminhada em terreno com variações de inclinação, superfície (terra, grama, pedras) e velocidade. Esta atividade visa melhorar seu condicionamento aeróbico e preparar as articulações para o canyoning.</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Use calçado adequado com bom amortecimento</li>
+                                        <li>Mantenha uma postura ereta durante a caminhada</li>
+                                        <li>Hidrate-se regularmente</li>
+                                        <li>Aumente gradualmente a dificuldade do terreno</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="week3-5" class="week-content">
+                    <h3>Semanas 3-5: Desenvolvimento Específico</h3>
+                    
+                    <h4>Academia (2 dias)</h4>
+                    <h5>Treino A (Força)</h5>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Supino inclinado</div>
+                            <div class="exercise-details">3 séries x 8-10 repetições</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Supino inclinado" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Deite-se no banco inclinado com os pés firmemente apoiados no chão. Segure a barra na largura dos ombros ou um pouco mais. Controle a descida da barra até próximo da parte superior do peito, e depois empurre para cima até estender os braços sem travar os cotovelos.</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Mantenha os ombros e quadris em contato com o banco</li>
+                                        <li>Respire controladamente durante o exercício</li>
+                                        <li>Foco na parte superior do peito e deltoides anteriores</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Adicionar outros exercícios da semana 3-5 da mesma forma -->
+                </div>
+                
+                <div id="week6-8" class="week-content">
+                    <h3>Semanas 6-8: Preparação Específica</h3>
+                    
+                    <h4>Academia (2 dias)</h4>
+                    <h5>Treino A (Força e Equilíbrio)</h5>
+                    
+                    <div class="exercise">
+                        <div class="exercise-header">
+                            <div class="exercise-title">Exercícios na BOSU ou disco de equilíbrio</div>
+                            <div class="exercise-details">3 séries x 45 segundos</div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="exercise-content">
+                            <div class="exercise-image-container">
+                                <img src="/api/placeholder/400/300" alt="Exercícios na BOSU" class="exercise-image">
+                            </div>
+                            <div class="exercise-details-container">
+                                <div class="exercise-description">
+                                    <p>Realize exercícios de equilíbrio sobre a BOSU ou disco de equilíbrio. Podem ser agachamentos estáticos, transferência de peso entre as pernas ou simplesmente manter o equilíbrio em um pé.</p>
+                                </div>
+                                <div class="exercise-tips">
+                                    <strong>Dicas:</strong>
+                                    <ul>
+                                        <li>Comece com apoio próximo caso precise de suporte</li>
+                                        <li>Mantenha o core ativado durante todo o exercício</li>
+                                        <li>Progrida gradualmente em dificuldade</li>
+                                        <li>Foco na estabilização do joelho</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Adicionar outros exercícios da semana 6-8 da mesma forma -->
+                </div>
+            </div>
+            
+            <div id="nutrition" class="tab-content">
+                <h2>Plano Alimentar</h2>
+                
+                <h3>Princípios Gerais</h3>
+                <ul>
+                    <li>Déficit calórico de 300-500kcal diárias</li>
+                    <li>Alto teor proteico (1,6-1,8g/kg de peso corporal)</li>
+                    <li>Carboidratos complexos focados em torno dos treinos</li>
+                    <li>Gorduras saudáveis em quantidade moderada</li>
+                    <li>Boa hidratação (mínimo 2,5-3 litros diários)</li>
+                </ul>
+                
+                <h3>Modelo de Plano Alimentar</h3>
+                
+                <div class="meal">
+                    <div class="meal-title">Café da manhã (7:00-8:00)</div>
+                    <ul class="meal-items">
+                        <li class="meal-item">Omelete com 2 ovos + 1 clara, espinafre e tomate</li>
+                        <li class="meal-item">40g de aveia com canela</li>
+                        <li class="meal-item">1 fruta (maçã, pêra ou laranja)</li>
+                        <li class="meal-item">Café preto ou chá verde</li>
+                    </ul>
+                </div>
+                
+                <div class="meal">
+                    <div class="meal-title">Lanche da manhã (10:30)</div>
+                    <ul class="meal-items">
+                        <li class="meal-item">150g de iogurte grego natural</li>
+                        <li class="meal-item">15g de granola sem açúcar</li>
+                        <li class="meal-item">1 punhado de frutas vermelhas ou 1/2 banana</li>
+                    </ul>
+                </div>
+                
+                <div class="meal">
+                    <div class="meal-title">Almoço (13:00)</div>
+                    <ul class="meal-items">
+                        <li class="meal-item">120-150g de proteína magra (frango, peixe ou tofu)</li>
+                        <li class="meal-item">1/2 prato de legumes variados</li>
+                        <li class="meal-item">40-50g de arroz integral ou batata-doce</li>
+                        <li class="meal-item">1/2 abacate ou 1 colher de azeite</li>
+                    </ul>
+                </div>
+                
+                <div class="meal">
+                    <div class="meal-title">Lanche da tarde (16:00)</div>
+                    <ul class="meal-items">
+                        <li class="meal-item">1 scoop de proteína whey com água</li>
+                        <li class="meal-item">1 fruta ou 2 nozes do Brasil</li>
+                    </ul>
+                </div>
+                
+                <div class="meal">
+                    <div class="meal-title">Jantar (19:30)</div>
+                    <ul class="meal-items">
+                        <li class="meal-item">120g de proteína magra (alternativa do almoço)</li>
+                        <li class="meal-item">Salada verde grande com limão e azeite</li>
+                        <li class="meal-item">40g de quinoa ou lentilhas</li>
+                    </ul>
+                </div>
+                
+                <div class="meal">
+                    <div class="meal-title">Antes de dormir (opcional - 21:30)</div>
+                    <ul class="meal-items">
+                        <li class="meal-item">Chá de camomila ou melissa</li>
+                        <li class="meal-item">100g de iogurte natural sem açúcar</li>
+                    </ul>
+                </div>
+                
+                <h3>Dicas Adicionais</h3>
+                
+                <div class="tips">
+                    <h4>Adaptações para dias de treino</h4>
+                    <ul>
+                        <li>Consumir carboidratos extras (30g) 1 hora antes do treino</li>
+                        <li>Proteína (20-25g) pós-treino para recuperação muscular</li>
+                    </ul>
+                </div>
+                
+                <div class="tips">
+                    <h4>Suplementação recomendada</h4>
+                    <ul>
+                        <li>Ômega-3: 2g diários (bom para as articulações)</li>
+                        <li>Glucosamina e condroitina: apoio para saúde articular</li>
+                        <li>Vitamina D: 2000UI, importante para saúde óssea</li>
+                    </ul>
+                </div>
+                
+                <div class="tips">
+                    <h4>Monitoramento</h4>
+                    <ul>
+                        <li>Acompanhe seu peso semanalmente, mesmo horário</li>
+                        <li>Ajuste a ingestão calórica conforme progresso</li>
+                        <li>Avalie energia e recuperação após treinos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="progress" class="tab-content">
+                <h2>Acompanhamento de Progresso</h2>
+                
+                <div class="progress-container">
+                    <h3>Objetivos Físicos</h3>
+                    
+                    <div class="progress-item">
+                        <div class="progress-title">
+                            <span>Perda de peso</span>
+                            <span>Meta: 4-6kg</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" id="weight-progress" data-value="0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-title">
+                            <span>Resistência cardiovascular</span>
+                            <span id="cardio-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" id="cardio-progress" data-value="0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-title">
+                            <span>Força muscular</span>
+                            <span id="strength-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" id="strength-progress" data-value="0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-title">
+                            <span>Estabilidade nos joelhos</span>
+                            <span id="knees-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" id="knees-progress" data-value="0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <div class="progress-title">
+                            <span>Equilíbrio e coordenação</span>
+                            <span id="balance-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-value" id="balance-progress" data-value="0"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Diário de Treino</h3>
+                <p>Use esta seção para registrar seus treinos e verificar seu progresso ao longo das semanas.</p>
+                
+                <div class="training-log">
+                    <table id="training-log-table" style="width:100%; border-collapse: collapse; margin-top: 15px;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Data</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Treino</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Linhas serão adicionadas via JavaScript -->
+                        </tbody>
+                    </table>
+                    
+                    <button id="add-log-entry" style="margin-top: 15px; padding: 8px 15px; background-color: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer;">Adicionar Entrada</button>
+                </div>
+                
+                <h3>Registre seu Peso</h3>
+                <div class="weight-tracker" style="margin-top: 20px;">
+                    <div style="display: flex; margin-bottom: 10px;">
+                        <input type="date" id="weight-date" style="flex: 1; padding: 8px; margin-right: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <input type="number" id="weight-value" placeholder="Peso em kg" style="flex: 1; padding: 8px; margin-right: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <button id="add-weight" style="padding: 8px 15px; background-color: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer;">Adicionar</button>
+                    </div>
+                    
+                    <div id="weight-chart" style="width: 100%; height: 300px; background-color: #f9f9f9; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
+                        Seu gráfico de peso será exibido aqui
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 30px; padding: 20px; background: var(--light); border-radius: 8px;">
+            <p>Plano de Treino para Canyoning - Criado especialmente para você</p>
+            <p>Lembre-se: Consulte um profissional de saúde antes de iniciar qualquer novo programa de exercícios.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Alternar entre as abas principais
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Remover classe ativa de todas as abas e conteúdos
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Adicionar classe ativa à aba clicada e seu conteúdo
+                tab.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Alternar entre as abas de semanas
+        document.querySelectorAll('.week-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const weekId = tab.getAttribute('data-week');
+                
+                // Remover classe ativa de todas as abas e conteúdos de semana
+                document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.week-content').forEach(c => c.classList.remove('active'));
+                
+                // Adicionar classe ativa à aba clicada e seu conteúdo
+                tab.classList.add('active');
+                document.getElementById(weekId).classList.add('active');
+            });
+        });
+        
+        // Alternar visibilidade dos detalhes de exercícios
+        document.querySelectorAll('.exercise-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.classList.toggle('active');
+                
+                // Alterar ícone
+                const icon = header.querySelector('.toggle-icon');
+                icon.textContent = content.classList.contains('active') ? '▲' : '▼';
+            });
+        });
+        
+        // Simular progresso para demonstração
+        setTimeout(() => {
+            animateProgress('weight-progress', 30);
+            animateProgress('cardio-progress', 40);
+            animateProgress('strength-progress', 35);
+            animateProgress('knees-progress', 25);
+            animateProgress('balance-progress', 30);
+        }, 1000);
+        
+        function animateProgress(id, value) {
+            const progressElement = document.getElementById(id);
+            const textElement = document.getElementById(id.replace('progress', 'text'));
+            
+            let current = 0;
+            const interval = setInterval(() => {
+                if (current >= value) {
+                    clearInterval(interval);
+                } else {
+                    current++;
+                    progressElement.style.width = current + '%';
+                    if (textElement) {
+                        textElement.textContent = current + '%';
+                    }
+                }
+            }, 20);
+        }
+        
+        // Funcionalidade do diário de treino
+        document.getElementById('add-log-entry').addEventListener('click', () => {
+            const table = document.getElementById('training-log-table').getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            
+            const todayCell = row.insertCell(0);
+            const today = new Date();
+            todayCell.textContent = today.toLocaleDateString();
+            
+            const trainCell = row.insertCell(1);
+            const trainSelect = document.createElement('select');
+            trainSelect.innerHTML = `
+                <option>Selecione</option>
+                <option>Academia - Treino A</option>
+                <option>Academia - Treino B</option>
+                <option>Ar Livre - Caminhada</option>
+                <option>Ar Livre - Trekking</option>
+                <option>Outro</option>
+            `;
+            trainCell.appendChild(trainSelect);
+            
+            const notesCell = row.insertCell(2);
+            notesCell.contentEditable = true;
+            notesCell.textContent = "Clique para adicionar notas";
+            notesCell.style.color = "#999";
+            
+            notesCell.addEventListener('focus', function() {
+                if (this.textContent === "Clique para adicionar notas") {
+                    this.textContent = "";
+                    this.style.color = "black";
+                }
+            });
+            
+            notesCell.addEventListener('blur', function() {
+                if (this.textContent === "") {
+                    this.textContent = "Clique para adicionar notas";
+                    this.style.color = "#999";
+                }
+            });
+        });
+        
+        // Funcionalidade de rastreamento de peso
+        const weightData = [];
+        
+        document.getElementById('add-weight').addEventListener('click', () => {
+            const date = document.getElementById('weight-date').value;
+            const weight = parseFloat(document.getElementById('weight-value').value);
+            
+            if (date && weight) {
+                weightData.push({date, weight});
+                updateWeightChart();
+                
+                // Limpar campos
+                document.getElementById('weight-date').value = '';
+                document.getElementById('weight-value').value = '';
+            }
+        });
+        
+        function updateWeightChart() {
+            if (weightData.length === 0) return;
+            
+            const chartContainer = document.getElementById('weight-chart');
+            chartContainer.innerHTML = '';
+            
+            // Ordenar dados por data
+            weightData.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            // Encontrar valores mínimos e máximos para escalas
+            let minWeight = Math.min(...weightData.map(d => d.weight));
+            let maxWeight = Math.max(...weightData.map(d => d.weight));
+            
+            // Ajustar para ter um pouco de margem
+            minWeight = Math.floor(minWeight - 2);
+            maxWeight = Math.ceil(maxWeight + 2);
+            
+            const chartWidth = chartContainer.clientWidth;
+            const chartHeight = chartContainer.clientHeight;
+            const padding = 40;
+            
+            // Criar SVG
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", chartWidth);
+            svg.setAttribute("height", chartHeight);
+            
+            // Calcular escalas
+            const xScale = (chartWidth - padding * 2) / (weightData.length - 1 || 1);
+            const yScale = (chartHeight - padding * 2) / (maxWeight - minWeight || 1);
+            
+            // Criar eixos
+            const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            xAxis.setAttribute("x1", padding);
+            xAxis.setAttribute("y1", chartHeight - padding);
+            xAxis.setAttribute("x2", chartWidth - padding);
+            xAxis.setAttribute("y2", chartHeight - padding);
+            xAxis.setAttribute("stroke", "#999");
+            xAxis.setAttribute("stroke-width", "1");
+            
+            const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            yAxis.setAttribute("x1", padding);
+            yAxis.setAttribute("y1", padding);
+            yAxis.setAttribute("x2", padding);
+            yAxis.setAttribute("y2", chartHeight - padding);
+            yAxis.setAttribute("stroke", "#999");
+            yAxis.setAttribute("stroke-width", "1");
+            
+            svg.appendChild(xAxis);
+            svg.appendChild(yAxis);
+            
+            // Criar linha do gráfico
+            const linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            let pathD = "";
+            
+            weightData.forEach((data, index) => {
+                const x = padding + index * xScale;
+                const y = chartHeight - padding - (data.weight - minWeight) * yScale;
+                
+                if (index === 0) {
+                    pathD = `M ${x},${y}`;
+                } else {
+                    pathD += ` L ${x},${y}`;
+                }
+                
+                // Adicionar pontos
+                const point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                point.setAttribute("cx", x);
+                point.setAttribute("cy", y);
+                point.setAttribute("r", "4");
+                point.setAttribute("fill", "#3498db");
+                
+                // Tooltip para mostrar valor
+                point.addEventListener('mouseover', function() {
+                    const tooltip = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    tooltip.setAttribute("x", x);
+                    tooltip.setAttribute("y", y - 10);
+                    tooltip.setAttribute("text-anchor", "middle");
+                    tooltip.setAttribute("fill", "#000");
+                    tooltip.setAttribute("class", "tooltip");
+                    tooltip.textContent = `${data.weight}kg (${new Date(data.date).toLocaleDateString()})`;
+                    svg.appendChild(tooltip);
+                });
+                
+                point.addEventListener('mouseout', function() {
+                    const tooltips = svg.querySelectorAll('.tooltip');
+                    tooltips.forEach(t => t.remove());
+                });
+                
+                svg.appendChild(point);
+            });
+            
+            linePath.setAttribute("d", pathD);
+            linePath.setAttribute("fill", "none");
+            linePath.setAttribute("stroke", "#2ecc71");
+            linePath.setAttribute("stroke-width", "2");
+            
+            svg.appendChild(linePath);
+            
+            // Adicionar rótulos no eixo Y
+            const numYLabels = 5;
+            for (let i = 0; i <= numYLabels; i++) {
+                const weightValue = minWeight + (maxWeight - minWeight) * (i / numYLabels);
+                const y = chartHeight - padding - (weightValue - minWeight) * yScale;
+                
+                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                label.setAttribute("x", padding - 5);
+                label.setAttribute("y", y);
+                label.setAttribute("text-anchor", "end");
+                label.setAttribute("alignment-baseline", "middle");
+                label.setAttribute("fill", "#666");
+                label.setAttribute("font-size", "12");
+                label.textContent = weightValue.toFixed(1);
+                
+                svg.appendChild(label);
+                
+                // Linhas de grade
+                const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                gridLine.setAttribute("x1", padding);
+                gridLine.setAttribute("y1", y);
+                gridLine.setAttribute("x2", chartWidth - padding);
+                gridLine.setAttribute("y2", y);
+                gridLine.setAttribute("stroke", "#eee");
+                gridLine.setAttribute("stroke-width", "1");
+                
+                svg.appendChild(gridLine);
+            }
+            
+            chartContainer.appendChild(svg);
+        }
+    </script>
+</body>
+</html>
