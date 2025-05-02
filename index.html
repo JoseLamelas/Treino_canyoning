@@ -266,6 +266,7 @@
             max-width: 100%;
             padding: 15px;
             margin: 0 auto;
+            overflow-y: auto;
         }
         
         header {
@@ -275,6 +276,8 @@
             text-align: center;
             border-radius: 10px 10px 0 0;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 5;
         }
         
         h1 {
@@ -302,6 +305,8 @@
         
         .tab-container {
             margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .tabs {
@@ -310,6 +315,8 @@
             list-style: none;
             background: var(--light);
             border-radius: 5px 5px 0 0;
+            position: relative;
+            z-index: 5;
         }
         
         .tab {
@@ -331,17 +338,29 @@
             padding: 20px;
             border-radius: 0 0 5px 5px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
         
         .tab-content.active {
             display: block;
         }
         
+        .week-tabs-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        
         .week-tabs {
             display: flex;
             flex-wrap: wrap;
             list-style: none;
-            margin-bottom: 10px;
+            margin-bottom: 0;
         }
         
         .week-tab {
@@ -362,6 +381,7 @@
         
         .week-content {
             display: none;
+            margin-top: 15px;
         }
         
         .week-content.active {
@@ -583,11 +603,13 @@
             <div id="training" class="tab-content">
                 <h2>Plano de Treino (8 semanas)</h2>
                 
-                <ul class="week-tabs">
-                    <li class="week-tab active" data-week="week1-2">Semanas 1-2</li>
-                    <li class="week-tab" data-week="week3-5">Semanas 3-5</li>
-                    <li class="week-tab" data-week="week6-8">Semanas 6-8</li>
-                </ul>
+                <div class="week-tabs-container">
+                    <ul class="week-tabs">
+                        <li class="week-tab active" data-week="week1-2">Semanas 1-2</li>
+                        <li class="week-tab" data-week="week3-5">Semanas 3-5</li>
+                        <li class="week-tab" data-week="week6-8">Semanas 6-8</li>
+                    </ul>
+                </div>
                 
                 <div id="week1-2" class="week-content active">
                     <h3>Semanas 1-2: Construção da Base</h3>
@@ -1260,19 +1282,50 @@
             });
         });
         
-        // Alternar entre as abas de semanas
+        // NOVA IMPLEMENTAÇÃO: Sistema de abas para semanas mais simples e direto
         document.querySelectorAll('.week-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const weekId = tab.getAttribute('data-week');
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
                 
-                // Remover classe ativa de todas as abas e conteúdos de semana
-                document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.week-content').forEach(c => c.classList.remove('active'));
+                // Obter o ID do conteúdo que deve ser mostrado
+                const targetId = this.getAttribute('data-week');
                 
-                // Adicionar classe ativa à aba clicada e seu conteúdo
-                tab.classList.add('active');
-                document.getElementById(weekId).classList.add('active');
+                // Esconder todos os conteúdos de semana
+                document.querySelectorAll('.week-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+                
+                // Remover classe ativa de todas as abas
+                document.querySelectorAll('.week-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // Mostrar o conteúdo alvo e ativar a aba clicada
+                document.getElementById(targetId).style.display = 'block';
+                this.classList.add('active');
+                
+                return false;
             });
+        });
+        
+        // Configuração inicial - mostrar primeiro conteúdo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esconder todos os conteúdos primeiro
+            document.querySelectorAll('.week-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Mostrar apenas o primeiro conteúdo
+            const firstWeekContent = document.getElementById('week1-2');
+            if (firstWeekContent) {
+                firstWeekContent.style.display = 'block';
+            }
+            
+            // Ativar a primeira aba
+            const firstTab = document.querySelector('.week-tab');
+            if (firstTab) {
+                firstTab.classList.add('active');
+            }
         });
         
         // Alternar visibilidade dos detalhes de exercícios
@@ -1284,6 +1337,67 @@
                 // Alterar ícone
                 const icon = header.querySelector('.toggle-icon');
                 icon.textContent = content.classList.contains('active') ? '▲' : '▼';
+                
+                // Carregar imagem real do exercício quando o painel for aberto
+                if (content.classList.contains('active')) {
+                    const exerciseTitle = header.querySelector('.exercise-title').textContent;
+                    const imgElement = content.querySelector('.exercise-image');
+                    loadExerciseImage(exerciseTitle, imgElement);
+                }
+            });
+        });
+        
+        // Função para carregar imagens reais de exercícios
+        function loadExerciseImage(exerciseName, imgElement) {
+            // Se a imagem já foi carregada (não é placeholder), não fazer nada
+            if (!imgElement.src.includes('placehold.co')) {
+                return;
+            }
+            
+            // Mapeamento de exercícios para imagens específicas fixas (muito mais confiável que API)
+            const imageUrls = {
+                'Supino reto': 'https://www.fitnesseducation.edu.au/wp-content/uploads/2020/10/Bench-Press.jpg',
+                'Remada baixa': 'https://www.inspireusafoundation.org/wp-content/uploads/2022/01/seated-cable-row-1024x451.jpg',
+                'Leg press': 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Leg-Press_600x600.png',
+                'Remo estacionário': 'https://nypost.com/wp-content/uploads/sites/2/2022/01/rowing-machine-benefits-1.jpg',
+                'Caminhada em terreno variado': 'https://cdn.mos.cms.futurecdn.net/4bzNnrvwVr28peRMMnAXRN.jpg',
+                'Supino inclinado': 'https://www.bodybuilding.com/images/2020/xdb/cropped/xdb-13n-incline-dumbbell-bench-press-m1-square-600x600.jpg',
+                'Remada sentada': 'https://www.bodybuilding.com/images/2020/xdb/cropped/xdb-50e-seated-cable-row-m2-square-600x600.jpg',
+                'Agachamento búlgaro': 'https://www.nerdfitness.com/wp-content/uploads/2019/07/bulgarian-split-squat.jpg',
+                'Rosca direta': 'https://www.bodybuilding.com/images/2020/xdb/cropped/xdb-48s-barbell-curl-m1-square-600x600.jpg',
+                'Prancha lateral': 'https://www.nerdfitness.com/wp-content/uploads/2021/01/side-plank-exercise-768x461.jpg',
+                'Elíptico': 'https://www.verywellfit.com/thmb/pO9Ejg4NdfjLDHloDXGYRZV2L-8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-854497230-5a7d96c23de4230037bcfec9.jpg',
+                'Remada intervalada': 'https://images.ctfassets.net/drib7o8rcbyf/5R7gbCPbhYXXHiN3api8tp/c55c273934fc56f0d4b5cf447f043e82/body-rowing-machine-indoors-GettyImages-953612580.jpg',
+                'Step-up em banco baixo': 'https://www.mensjournal.com/wp-content/uploads/mf/1280-stepup-box.jpg',
+                'Caminhada em subida': 'https://images.pexels.com/photos/691034/pexels-photo-691034.jpeg',
+                'Treino com elásticos': 'https://www.mensjournal.com/wp-content/uploads/2019/09/ShoulderResistance.jpg',
+                'Exercícios na BOSU': 'https://www.mensjournal.com/wp-content/uploads/mf/1280-bosu-ball-pushup.jpg',
+                'Agachamento no TRX': 'https://i.pinimg.com/originals/e3/c5/8a/e3c58a07c71386d3d00938eda32e96af.jpg',
+                'Puxada alta': 'https://www.bodybuilding.com/images/2020/xdb/cropped/xdb-49e-wide-grip-lat-pulldown-m2-square-600x600.jpg',
+                'Flexão plantar': 'https://www.bodybuilding.com/images/2020/xdb/cropped/xdb-70s-seated-calf-raise-m1-square-600x600.jpg',
+                'Circuito de 5 exercícios': 'https://www.muscleandfitness.com/wp-content/uploads/2019/07/Young-Fitness-Female-Circuit-Training-Facility.jpg',
+                'Trekking em trilhas': 'https://cdn.outsideonline.com/wp-content/uploads/2018/10/22/hiker-on-trail_h.jpg',
+                'Treinamento com mochila': 'https://www.wellandgood.com/wp-content/uploads/2020/06/GettyImages-1160723031.jpg',
+                'Prática de técnicas de canyoning': 'https://www.canyoneering.net/wp-content/uploads/2018/07/hualapai-canyon-rappel-one.jpg'
+            };
+            
+            // Se temos uma URL dedicada para este exercício
+            if(imageUrls[exerciseName]) {
+                imgElement.src = imageUrls[exerciseName];
+                return;
+            }
+            
+            // Caso de fallback para o placeholder original
+            console.log('Imagem não encontrada para:', exerciseName);
+        }
+        
+        // Carregar todas as imagens quando a página for carregada
+        window.addEventListener('load', () => {
+            // Carregar apenas as imagens visíveis inicialmente (performance)
+            document.querySelectorAll('.exercise-content.active').forEach(content => {
+                const exerciseTitle = content.previousElementSibling.querySelector('.exercise-title').textContent;
+                const imgElement = content.querySelector('.exercise-image');
+                loadExerciseImage(exerciseTitle, imgElement);
             });
         });
         
